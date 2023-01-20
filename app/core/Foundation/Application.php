@@ -2,20 +2,36 @@
 
 namespace Foundation;
 
+use Config\Config;
+
 class Application
 {
-	protected string $baseDir;
+	protected string $basePath;
+	protected string $configPath;
 
-	/**
-	 * @param string $baseDir
-	 */
-	public function __construct(string $baseDir)
+	protected Config $config;
+
+	public function __construct(array $options)
 	{
-		$this->baseDir = $baseDir;
+		$this->basePath = $options['paths']['base'];
+		$this->configPath = $options['paths']['config'];
+
+		$this->config = new Config($this->loadConfigs());
 	}
 
-	public function start()
+	protected function loadConfigs(): array
 	{
-		echo "Hello";
+		$configs = [];
+
+		foreach (glob("{$this->configPath}\\*.php") as $file) {
+			$configs[pathinfo($file, PATHINFO_FILENAME)] = require_once $file;
+		}
+
+		return $configs;
+	}
+
+	public function start(): void
+	{
+		var_dump($this->config->get('app.key'));
 	}
 }
