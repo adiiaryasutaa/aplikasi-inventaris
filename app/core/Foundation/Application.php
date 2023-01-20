@@ -2,9 +2,7 @@
 
 namespace Foundation;
 
-use Contracts\ApplicationInterface;
-
-class Application implements ApplicationInterface
+class Application
 {
 	protected string $baseDir;
 
