@@ -1,7 +1,7 @@
 <?php
 
 $dirs = [
-	__DIR__ . '\\app\\core\\Contracts',
+	__DIR__ . '\\app\\core\\Config',
 	__DIR__ . '\\app\\core\\Foundation',
 ];
 
