@@ -3,20 +3,25 @@
 namespace Foundation;
 
 use Config\Config;
+use Http\Response;
+use Router\Router;
 
 class Application
 {
 	protected string $basePath;
 	protected string $configPath;
 
-	protected Config $config;
+	public static Config $config;
+	public static Router $router;
 
 	public function __construct(array $options)
 	{
 		$this->basePath = $options['paths']['base'];
 		$this->configPath = $options['paths']['config'];
 
-		$this->config = new Config($this->loadConfigs());
+		self::$config = new Config($this->loadConfigs());
+		self::$router = new Router();
+		self::$router->loadRoutes();
 	}
 
 	protected function loadConfigs(): array
@@ -32,6 +37,18 @@ class Application
 
 	public function start(): void
 	{
-		var_dump($this->config->get('app.key'));
+		$this->handleRequest();
+	}
+
+	protected function handleRequest()
+	{
+		$this->handleResponse(self::$router->resolve());
+	}
+
+	protected function handleResponse(Response $response)
+	{
+		http_response_code($response->getStatus());
+
+		echo $response->getContent();
 	}
 }
