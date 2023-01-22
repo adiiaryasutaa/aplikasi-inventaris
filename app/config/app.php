@@ -1,5 +1,7 @@
 <?php
 
 return [
-	'key' => 'value',
+	'paths' => [
+		'routes' => __DIR__ . '\\..\\routes\\web.php'
+	],
 ];
